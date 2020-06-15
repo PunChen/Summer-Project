@@ -27,4 +27,5 @@ zstd还有一个特别的功能，支持以训练方式生成字典文件，相�
 注意可能需要安装一些其他环境。
 服务器上也是按照这个过程安装。
 最终测试了一个vector的程序来比较g++和icpc在性能上的差异：
+  ![icpcTest](https://github.com/PunChen/Summer-Project/blob/master/imgs/2020-06-12%2010-11-26%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png)
 一个90s 一个2s，可以看到性能的提升还是十分明显的。
