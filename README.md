@@ -34,7 +34,7 @@ zstd还有一个特别的功能，支持以训练方式生成字典文件，相�
 更新了线性回归的相关知识，为基因数据的筛选打下来基础
 
 ### Update 2020.06.25
-### BgenParser
+### BgenParser解析
 
 这里用的是BGEN v1.2，它相比之前的版本做了一些改进，具体如下：
 
@@ -47,29 +47,29 @@ zstd还有一个特别的功能，支持以训练方式生成字典文件，相�
 
 参考官方文档对其的解释：
 
-![image-20200623093219981](C:\Users\yanli\AppData\Roaming\Typora\typora-user-images\image-20200623093219981.png)
+![Overview](https://github.com/PunChen/Summer-Project/blob/master/imgs/image-20200623093219981.png)
 
 一个BGEN文件由一个标题块和一个可选的样本标识符块组成，该标题块提供有关该文件的常规信息。这些之后是一系列连续存储在文件中的变体数据块，每个变体数据块均包含单个遗传变体的数据。
 
 具体的：
 
-![image-20200623093339285](C:\Users\yanli\AppData\Roaming\Typora\typora-user-images\image-20200623093339285.png)
+![The first four bytes](https://github.com/PunChen/Summer-Project/blob/master/imgs/image-20200623093339285.png)
 
 即前4个字节存了一个偏移量，表示真正的数据（跳过标题块）从哪里开始（相对第5个字节的偏移量）。这样我们就能确定下标题块的大小以及数据块的位置。
 
 然后根据标题块的详细描述对标题块先进性解析：
 
-![image-20200623095758070](C:\Users\yanli\AppData\Roaming\Typora\typora-user-images\image-20200623095758070.png)
+![The header block](https://github.com/PunChen/Summer-Project/blob/master/imgs/image-20200623095758070.png)
 
-![image-20200623100622723](C:\Users\yanli\AppData\Roaming\Typora\typora-user-images\image-20200623100622723.png)
+![code](https://github.com/PunChen/Summer-Project/blob/master/imgs/image-20200623100622723.png)
 
 首先读出偏移量offset，然后读整个标题块，如果满足条件，就具体的读具体的样本表示块，最后把指针跳到具体的变异数据块。下面是这部分的输出：
 
-![image-20200623100748543](C:\Users\yanli\AppData\Roaming\Typora\typora-user-images\image-20200623100748543.png)
+![output](https://github.com/PunChen/Summer-Project/blob/master/imgs/image-20200623100748543.png)
 
 下面是具体的变异块的解析，还是按照官方的文档摸清楚他的文件结构
 
-![image-20200623102119851](C:\Users\yanli\AppData\Roaming\Typora\typora-user-images\image-20200623102119851.png)
+![Variant identifying data](https://github.com/PunChen/Summer-Project/blob/master/imgs/image-20200623102119851.png)
 
 
 
@@ -79,11 +79,11 @@ zstd还有一个特别的功能，支持以训练方式生成字典文件，相�
 
 整个21号染色体的变异信息有37G，总共1261158条变异信息，调试部分用的数据是4个包含10条变异的bgen文件：
 
-![image-20200625111605772](C:\Users\yanli\AppData\Roaming\Typora\typora-user-images\image-20200625111605772.png)
+![Small data](https://github.com/PunChen/Summer-Project/blob/master/imgs/image-20200625111605772.png)
 
 初步定下运行单个文件包含100条变异，后期在跑在更大的数据上：
 
-![image-20200625111917792](C:\Users\yanli\AppData\Roaming\Typora\typora-user-images\image-20200625111917792.png)
+![Middle data](https://github.com/PunChen/Summer-Project/blob/master/imgs/image-20200625111917792.png)
 
 经历数据解析之后的sample格式大体如下：
 
@@ -103,12 +103,12 @@ zstd还有一个特别的功能，支持以训练方式生成字典文件，相�
 
 核心代码：
 
-![image-20200625113019026](C:\Users\yanli\AppData\Roaming\Typora\typora-user-images\image-20200625113019026.png)
+![code](https://github.com/PunChen/Summer-Project/blob/master/imgs/image-20200625113019026.png)
 
-![image-20200625113044875](C:\Users\yanli\AppData\Roaming\Typora\typora-user-images\image-20200625113044875.png)
+![code](https://github.com/PunChen/Summer-Project/blob/master/imgs/image-20200625113044875.png)
 
 运行结果：
 
-![image-20200625113140956](C:\Users\yanli\AppData\Roaming\Typora\typora-user-images\image-20200625113140956.png)
+![outputs](https://github.com/PunChen/Summer-Project/blob/master/imgs/image-20200625113140956.png)
 
 解析部分的热点实在解压缩和解析bgen文件上，因为他采用的高效的压缩算法，所以解压和解析起来也有点麻烦。具体的，跑在一个调试用的小文件（10个变异，17M）下，大约3秒。
