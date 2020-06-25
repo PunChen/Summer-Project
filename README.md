@@ -87,15 +87,15 @@ zstd还有一个特别的功能，支持以训练方式生成字典文件，相�
 
 经历数据解析之后的sample格式大体如下：
 
-<img src="file:///D:\QQ\QQData\1362520198\Image\C2C\57991DA68DC1169DBB6617F56A935994.png" alt="img" style="zoom:50%;" />
+![Sample data](https://github.com/PunChen/Summer-Project/blob/master/imgs/p1.png)
 
 解析好的bgen格式（某一个变异）：
 
-<img src="file:///D:\QQ\QQData\1362520198\Image\C2C\B4F467954094447EDFFB7C44B04B2AA6.png" alt="img" style="zoom:50%;" />
+![Bgen data](https://github.com/PunChen/Summer-Project/blob/master/imgs/p2.png)
 
 合并之后用于计算的数据格式：
 
-<img src="file:///D:\QQ\QQData\1362520198\Image\C2C\63C7ED3C996356EE1D6346423EC40BC6.png" alt="img" style="zoom:50%;" />
+![Merge data](https://github.com/PunChen/Summer-Project/blob/master/imgs/p3.png)
 
 其中48w就是数据中的48w（接近50w）个人，pcasNum就是输入的协变量个数，+1是要分析的表型。
 
